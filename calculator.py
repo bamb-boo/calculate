@@ -11,7 +11,10 @@ while done==False:
     angle=float(input("enter the angle "))
     angle=math.radians(angle)
     distance=((velocity**2)*math.sin(2*angle))/9.81
-    choice=list[math.floor(distance)-1]
+    if 0 <= math.degrees(angle)< 1.3:
+        choice=0
+    else:
+        choice=list[math.floor(distance)-1]
     print(choice)
     choices.append(choice)
     if choice=="equals":
@@ -32,18 +35,16 @@ for i in range(len(choices)-1):
         evaluate=evaluate+str(value)
 
 evaluate=evaluate+(")"*brackets)
+evaluate=evaluate.replace("sin", "*sin").replace("cos", "*cos").replace("tan", "*tan").replace("pi", "*pi")
+evaluate=evaluate.replace("+*", "+").replace("-*", "-").replace("**", "*").replace("/*", "/") #check if other things need to be replaced
+
 print(evaluate)
 
 answer=eval(evaluate)
 print(answer)
 
 '''things to do next
-adjust for really small nos (0.1 angle etc --> negative nos)
-adjust for "human"-things such as 3sin, when we mean 3*sin (build redundancy)
 add a cannonball-like animation (maybe terminal maybe tkinter) to show ball being launched at angle and following the path through air and falling into "buckets"
-
-
-
 '''
 
 
@@ -57,3 +58,35 @@ add a cannonball-like animation (maybe terminal maybe tkinter) to show ball bein
 3
 45
 '''
+
+
+ordinary differential equation-
+dy/dt and dx/dt
+horizontal = previous position + velocity_x*time
+vertical = previous position + velocity_y*time - 0.5*9.81*time^2
+
+velocty_x and velocity_y using sin and cos of angle and velocity (line 8)
+                                         
+          *                               
+         * *                               
+        *   *                              
+       *     *                             
+      *       *                            
+----|     |\  */\   /\   /\   /\   /\   /
+    |     | \_/  \_/  \_/  \_/  \_/  \_/ 
+    |     |
+    |     |
+    ______
+
+
+                                         
+                                          
+                                           
+            *                                    
+         *     *                            
+       *         *                          
+----|     |\   /\   /\   /\   /\   /\   /
+    |     | \_/  \_/  \_/  \_/  \_/  \_/ 
+    |     |
+    |     |
+    ______
