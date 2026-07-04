@@ -1,3 +1,4 @@
+import time as t
 import math
 from math import sin, cos, tan, pi
 list=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "+", "-", "*", "/", ".", "sin", "cos", "tan", "pi", "equals"]
@@ -6,17 +7,63 @@ evaluate=""
 choices=[]
 done=False
 velocity= 14.008 # set it to 14.69081 later
+time=0
+y=0
+x=0
+dt=0.1
+seconddone=False
 
 while done==False:
     angle=float(input("enter the angle "))
-    angle=math.radians(angle)
+    vx=math.cos(math.radians(angle))*velocity
+    vy=math.sin(math.radians(angle))*velocity
+
     distance=((velocity**2)*math.sin(2*angle))/9.81
     if 0 <= math.degrees(angle)< 1.3:
         choice=0
     else:
         choice=list[math.floor(distance)-1]
     print(choice)
+
     choices.append(choice)
+        
+    while seconddone==False:
+        print("\033[2J\033[H", end="")
+        x=vx*time
+        y=vy*time - 0.5*9.81*time**2
+        intx=int(x)
+        inty=int(y)
+        time=time+dt
+        for j in range(12):
+            for i in range(136):
+                if i == intx and (11-j) == inty:
+                    print("*", end="")
+                else:
+                    if i == 135:
+                        print(" ")
+                    else:
+                        print(" ",  end="")
+
+        print("|  |", end="")
+        for i in range(1, 89):
+            if i%4==1:
+                print(" ", end="")
+            elif i%4==2:
+                print("|", end="")
+            elif i%4==3:
+                print("_", end="")
+            elif i%4==0:
+                print("|", end="")
+        
+        print("\n|  |",  end="")
+        for i in range(22):
+            print(" |_|", end="")
+        print("\n|__|")
+        if y<0 and time > dt:
+            seconddone=True
+        else:
+            print("\033[H", end="")
+            t.sleep(0.2)
     if choice=="equals":
         done=True
 
@@ -43,6 +90,9 @@ print(evaluate)
 answer=eval(evaluate)
 print(answer)
 
+
+
+
 '''things to do next
 add a cannonball-like animation (maybe terminal maybe tkinter) to show ball being launched at angle and following the path through air and falling into "buckets"
 '''
@@ -59,34 +109,3 @@ add a cannonball-like animation (maybe terminal maybe tkinter) to show ball bein
 45
 '''
 
-
-ordinary differential equation-
-dy/dt and dx/dt
-horizontal = previous position + velocity_x*time
-vertical = previous position + velocity_y*time - 0.5*9.81*time^2
-
-velocty_x and velocity_y using sin and cos of angle and velocity (line 8)
-                                         
-          *                               
-         * *                               
-        *   *                              
-       *     *                             
-      *       *                            
-----|     |\  */\   /\   /\   /\   /\   /
-    |     | \_/  \_/  \_/  \_/  \_/  \_/ 
-    |     |
-    |     |
-    ______
-
-
-                                         
-                                          
-                                           
-            *                                    
-         *     *                            
-       *         *                          
-----|     |\   /\   /\   /\   /\   /\   /
-    |     | \_/  \_/  \_/  \_/  \_/  \_/ 
-    |     |
-    |     |
-    ______
