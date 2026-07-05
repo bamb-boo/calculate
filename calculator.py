@@ -106,7 +106,13 @@ for i in range(len(choices)-1):
         evaluate=evaluate+str(value)
 
 evaluate=evaluate+(")"*brackets)
-evaluate=evaluate.replace("sin", "*sin").replace("cos", "*cos").replace("tan", "*tan").replace("pi", "*pi")
+
+temp=""
+for i, char in enumerate(evaluate):
+    if i>0 and char.isalpha() and (evaluate[i-1].isdigit() or evaluate[i-1]==")"):
+        temp=temp+"*"
+    temp=temp+char
+evaluate=temp
 evaluate=evaluate.replace("+*", "+").replace("-*", "-").replace("**", "*").replace("/*", "/") #check if other things need to be replaced
 
 print(evaluate)
