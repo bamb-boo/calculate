@@ -53,6 +53,7 @@ while done==False:
     y=0
     x=0
     seconddone=False
+    places=[]
     angle=float(input("enter the angle "))
     angle=math.radians(angle)
     vx=math.cos(angle)*velocity
@@ -69,34 +70,30 @@ while done==False:
         
     while seconddone==False:
         print("\033[3J\033[2J\033[H", end="")
-        x=vx*time
+        x=vx*time 
         y=vy*time - 0.5*9.81*time**2
         intx=round(x*4)
         inty=int(y*2)
-        time=time+dt
-        final = (y<0 and time>dt)
-        for j in range(12):
-            for i in range(136):
-                if not final and i == intx and (11-j) == inty:
-                    print("*", end="")
-                else:
-                    if i == 135:
-                        print(" ")
-                    else:
-                        print(" ", end="")
+        final = (y<0 and time>0)
+        place=[intx, inty]
+        places.append(place)
 
-        print("|  |", end="")
-        for i in range(1, 81):
-            if i%4==1:
-                print(" ", end="")
-            elif i%4==2:
-                print("|", end="")
-            elif i%4==3:
-                print(" ", end="")
-            elif i%4==0:
-                print("|", end="")
-        
-        print("\n|  |",  end="")
+        frames=[]
+        for j in range(12):
+            row=""
+            for i in range(136):
+                if not final and i == intx and (11-j)==inty:
+                    row=row+"*"
+                else:
+                    row=row+" "
+            frames.append(row)
+
+        divide = "|  |"
+        for i in range(20):
+            divide=divide+" | |"
+        frames.append(divide)
+
+        hole="|  |"
         if final:
             target=math.floor(distance)-1
         else:
@@ -104,30 +101,26 @@ while done==False:
 
         for i in range(20):
             if final and i==target:
-                print(" |*|", end="")
+                hole=hole+" |*|"
             else:
-                print(" |_|", end="")
-
-
-        print("\n|__|", end="")
-
+                hole=hole+" |_|"
+        frames.append(hole)
+        value="|__| "
         for i in range(len(simple_list)-1):
-            print(f"  {simple_list[i]} ",  end="")
+            value=value+f" {simple_list[i]}  "
+        value=value+" ="
+        frames.append(value)
 
-        print(" = ")
-
+        print("\n".join(frames))
 
         if final:
             seconddone = True
         else:
+            time=time+dt
             t.sleep(0.1)
-
-
 
     if choice=="equals":
         done=True
-    else:
-        seconddone=False
 
 brackets=0
 for i in range(len(choices)-1):
